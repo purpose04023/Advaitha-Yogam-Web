@@ -1,81 +1,57 @@
-import React, { useState } from 'react';
-import { Mail, MessageSquare, Play } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { subscribeToNewsletter } from '../utils/newsletter';
+import React from 'react';
+import { useLanguage } from '../utils/i18n/LanguageContext';
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
-  const [isSubscribing, setIsSubscribing] = useState(false);
-  const [message, setMessage] = useState('');
-
-  const handleSubscribe = async (e) => {
-    e.preventDefault();
-    setIsSubscribing(true);
-    setMessage('');
-
-    try {
-      const result = await subscribeToNewsletter(email);
-      if (result.success) {
-        setMessage('Successfully subscribed to the newsletter!');
-        setEmail('');
-      } else {
-        setMessage(result.error || 'Failed to subscribe. Please try again.');
-      }
-    } catch (err) {
-      setMessage('An error occurred. Please try again later.');
-    } finally {
-      setIsSubscribing(false);
-    }
-  };
+  const { t } = useLanguage();
 
   return (
-    <footer className="bg-[#1f1b11] py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 px-12 items-center max-w-7xl mx-auto gap-8">
-        <div className="space-y-4">
-          <div className="font-headline text-2xl text-white">Editorial Spiritual Excellence</div>
-          <p className="font-body text-slate-400 text-sm max-w-sm">
-            A digital haven for those seeking the ultimate truth through the traditional lens of Advaita Vedanta and the scholarly works of ancient masters.
-          </p>
-          <div className="flex gap-4 pt-4">
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
-              <MessageSquare className="w-5 h-5" />
-            </a>
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
-              <Mail className="w-5 h-5" />
-            </a>
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
-              <Play className="w-5 h-5" />
-            </a>
+    <footer className="bg-surface-container-highest pt-24 pb-12 border-t border-outline-variant/30">
+      <div className="max-w-7xl mx-auto px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          <div className="col-span-1 md:col-span-2 space-y-8">
+            <h2 className="font-headline text-3xl font-bold text-primary tracking-tight">Advaitha Yogam</h2>
+            <p className="text-on-surface-variant max-w-md leading-relaxed">
+              A digital haven for those seeking the ultimate truth through the traditional lens of Advaitha Yogam and the scholarly works of ancient masters.
+            </p>
+            <div className="flex gap-4">
+              {['Twitter', 'YouTube', 'Instagram', 'LinkedIn'].map((social) => (
+                <a key={social} href="#" className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+                  <span className="sr-only">{social}</span>
+                  <div className="w-5 h-5 bg-current mask-icon" />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="font-headline font-bold text-on-surface mb-6 uppercase tracking-widest text-xs">Resources</h4>
+            <ul className="space-y-4 text-on-surface-variant text-sm">
+              <li><a href="#" className="hover:text-primary transition-colors">{t('articles')}</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">{t('pravachanam')}</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Digital Library</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Manuscript Archive</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-headline font-bold text-on-surface mb-6 uppercase tracking-widest text-xs">Organization</h4>
+            <ul className="space-y-4 text-on-surface-variant text-sm">
+              <li><a href="#" className="hover:text-primary transition-colors">About Us</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Our Scholars</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Events</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Contact</a></li>
+            </ul>
           </div>
         </div>
-        <div className="flex flex-col md:items-end space-y-6">
-          <form onSubmit={handleSubscribe} className="flex gap-2 w-full max-w-sm">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Join our newsletter"
-              className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
-              required
-            />
-            <button
-              type="submit"
-              disabled={isSubscribing}
-              className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
-            >
-              {isSubscribing ? '...' : 'Join'}
-            </button>
-          </form>
-          {message && <p className="text-[10px] text-primary italic">{message}</p>}
 
-          <div className="flex flex-wrap gap-8 justify-start md:justify-end">
-            <Link to="/privacy" className="font-label text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="font-label text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Terms of Service</Link>
-            <Link to="/contact" className="font-label text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Contact Us</Link>
-            <Link to="/archive" className="font-label text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Archive</Link>
-          </div>
-          <div className="font-label text-xs uppercase tracking-widest text-slate-400">
-            © 2024 Editorial Spiritual Excellence. All Rights Reserved.
+        <div className="pt-8 border-t border-outline-variant/30 flex flex-col md:row justify-between items-center gap-6">
+          <p className="text-outline text-xs uppercase tracking-widest">
+            © {new Date().getFullYear()} Advaitha Yogam. All Rights Reserved.
+          </p>
+          <div className="flex gap-8 text-xs text-outline uppercase tracking-widest">
+            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-primary transition-colors">Cookie Policy</a>
           </div>
         </div>
       </div>

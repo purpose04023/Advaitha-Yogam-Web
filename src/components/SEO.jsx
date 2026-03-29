@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 const SEO = ({ title, description, image, url, type = 'website', article = false }) => {
-  const fullTitle = `${title} | Editorial Spiritual Excellence`;
+  const fullTitle = `${title} | Advaitha Yogam`;
   const siteUrl = 'https://advaita-yogam-web.render.com';
   const fullUrl = `${siteUrl}${url}`;
 
@@ -14,11 +14,11 @@ const SEO = ({ title, description, image, url, type = 'website', article = false
     "image": image,
     "author": {
       "@type": "Organization",
-      "name": "Editorial Spiritual Excellence"
+      "name": "Advaitha Yogam"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Editorial Spiritual Excellence",
+      "name": "Advaitha Yogam",
       "logo": {
         "@type": "ImageObject",
         "url": `${siteUrl}/logo.png`

@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import HeroScene from '../components/HeroScene';
 import { subscribeToNewsletter } from '../utils/newsletter';
 import { Play, ArrowRight, BookOpen, History, Brain } from 'lucide-react';
 import MainLayout from '../layouts/MainLayout';
 import SEO from '../components/SEO';
+import { useLanguage } from '../utils/i18n/LanguageContext';
 
 const Home = () => {
   const [email, setEmail] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [message, setMessage] = useState('');
+  const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -19,10 +23,10 @@ const Home = () => {
     try {
       const result = await subscribeToNewsletter(email);
       if (result.success) {
-        setMessage('Successfully subscribed!');
+        setMessage(t('success_sub'));
         setEmail('');
       } else {
-        setMessage(result.error || 'Failed to subscribe.');
+        setMessage(result.error || t('fail_sub'));
       }
     } catch (err) {
       setMessage('An error occurred.');
@@ -42,11 +46,11 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative min-h-[870px] flex items-center overflow-hidden bg-primary">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/60 to-transparent z-10"></div>
           <img
-            alt="Spiritual Scholar"
+            alt="Advaitha Yogam Hero"
             className="w-full h-full object-cover"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA02vsQc_KUTYWlpRJbSQ7F0Kp7wW85vtSOqfy1KKw0Zaoe6ZoN18FQGzgw2659zdQ-Yh_rJR9Jm8esAQC8o6_NMqlr9qtjGWUK5BJLRyfqWCvIYyaWz6UlCKy_kBJrObFb4CsE6LPMm_8Ai_jFsRxGpxssXj76OVBEmuCug06veCCgApFxJrA8l2m7VqLi2-wRXz1AhejyeJC8jp4DwlOB-hqNErXSBjlK11qGEc6wUBmF_bDoTJvXtCEGCyQjVGfjId4Ty7frUf4"
+            src="https://images.unsplash.com/photo-1545127398-14699f92334b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
           />
         </div>
 
@@ -63,18 +67,24 @@ const Home = () => {
               Ancient Wisdom. Modern Voice.
             </span>
             <h1 className="font-headline text-6xl md:text-7xl text-white leading-[1.1]">
-              The Path of <br />
-              <span className="text-secondary-container italic">Advaita Vedanta</span>
+              {t('hero_title')} <br />
+              <span className="text-secondary-container italic">Advaitha Yogam</span>
             </h1>
             <p className="text-primary-fixed text-lg max-w-lg leading-relaxed font-light">
-              Exploring the profound depths of non-duality through scholarly discourses, authentic translations, and the timeless wisdom of the Upanishads.
+              {t('hero_subtitle')}
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <button className="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-md font-bold text-lg hover:shadow-xl transition-all">
-                Begin Journey
+              <button
+                onClick={() => navigate('/articles')}
+                className="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-md font-bold text-lg hover:shadow-xl transition-all active:scale-95"
+              >
+                {t('begin_journey')}
               </button>
-              <button className="border border-white/30 text-white px-8 py-4 rounded-md font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-sm">
-                Listen to Discourses
+              <button
+                onClick={() => navigate('/pravachanam')}
+                className="border border-white/30 text-white px-8 py-4 rounded-md font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-sm active:scale-95"
+              >
+                {t('listen_discourses')}
               </button>
             </div>
           </motion.div>
@@ -87,13 +97,13 @@ const Home = () => {
           >
             <div className="relative w-full max-w-md">
               <div className="absolute -top-12 -left-12 w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl"></div>
-              <div className="relative bg-surface-container-lowest p-8 shadow-2xl rounded-xl rotate-3 transform translate-y-12">
+              <div className="relative bg-surface-container-lowest p-8 shadow-2xl rounded-xl rotate-3 transform translate-y-12 backdrop-blur-sm bg-white/95">
                 <div className="flex items-center space-x-4 mb-6">
                   <div className="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center">
                     <BookOpen className="text-white w-6 h-6" />
                   </div>
                   <div>
-                    <p className="font-headline font-bold text-on-surface">Daily Reflection</p>
+                    <p className="font-headline font-bold text-on-surface">{t('daily_reflection')}</p>
                     <p className="text-xs text-outline italic">Taitteriya Upanishad</p>
                   </div>
                 </div>
@@ -111,16 +121,22 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-8">
           <div className="flex justify-between items-end mb-16">
             <div>
-              <h2 className="font-headline text-4xl text-primary font-bold mb-4">Pravachanam</h2>
+              <h2 className="font-headline text-4xl text-primary font-bold mb-4">{t('pravachanam')}</h2>
               <div className="h-1 w-24 bg-secondary-container"></div>
             </div>
-            <button className="text-primary font-bold flex items-center gap-2 hover:gap-4 transition-all group">
-              View All Discourses <ArrowRight className="w-5 h-5" />
+            <button
+              onClick={() => navigate('/pravachanam')}
+              className="text-primary font-bold flex items-center gap-2 hover:gap-4 transition-all group"
+            >
+              {t('view_all_discourses')} <ArrowRight className="w-5 h-5" />
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="md:col-span-2 group cursor-pointer overflow-hidden rounded-xl relative h-[400px]">
+            <div
+              onClick={() => navigate('/pravachanam')}
+              className="md:col-span-2 group cursor-pointer overflow-hidden rounded-xl relative h-[400px]"
+            >
               <img
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxoal24kWql2c2UOOaJ-ocDD4IzqrG6mrAKuI3iDfVCf3zCYAPE_8avI1jVob11N9BGYNsAViQ08sKBZFkvlvYjduqKt96xPVGEa0RsZzc-TLEqo6Q3CznWRF3lNzWLJjGgYAu3ya0VAnEknMraRcjPW1yTXdmxJjmAC2ook0QOU0eITpCr1Mc2RGXO6jZVUYZDnIJCfvS9XuSSkojm8vyCtB6w7ySmX0GptZr-MkXgxzdVGxjRUUD3PotjPtZZnW4XbxffTbFNm0"
@@ -161,11 +177,14 @@ const Home = () => {
       <section className="py-24 bg-surface-container-low">
         <div className="max-w-7xl mx-auto px-8">
           <div className="mb-16 text-center">
-            <h2 className="font-headline text-4xl text-primary font-bold mb-4">Scholarly Articles</h2>
+            <h2 className="font-headline text-4xl text-primary font-bold mb-4">{t('articles')}</h2>
             <p className="text-outline max-w-2xl mx-auto">In-depth explorations of Vedantic concepts, historical manuscripts, and modern applications of ancient wisdom.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-6 h-auto md:h-[600px]">
-            <div className="md:col-span-2 md:row-span-2 bg-surface-container-lowest p-8 rounded-xl flex flex-col justify-between group cursor-pointer relative overflow-hidden">
+            <div
+              onClick={() => navigate('/article/mithya')}
+              className="md:col-span-2 md:row-span-2 bg-surface-container-lowest p-8 rounded-xl flex flex-col justify-between group cursor-pointer relative overflow-hidden"
+            >
               <div className="absolute top-0 right-0 p-8 text-primary/10">
                 <BookOpen className="w-32 h-32" />
               </div>
@@ -211,8 +230,8 @@ const Home = () => {
       {/* Newsletter Section */}
       <section className="py-24 bg-[#164491]">
         <div className="max-w-4xl mx-auto px-8 text-center">
-          <h2 className="font-headline text-4xl text-white font-bold mb-6">Join Our Spiritual Community</h2>
-          <p className="text-primary-fixed mb-10 text-lg">Receive weekly insights, newly published articles, and notifications about live discourses directly in your inbox.</p>
+          <h2 className="font-headline text-4xl text-white font-bold mb-6">{t('join_community')}</h2>
+          <p className="text-primary-fixed mb-10 text-lg">{t('newsletter_desc')}</p>
           <form onSubmit={handleSubscribe} className="flex flex-col md:flex-row gap-4">
             <input
               value={email}
@@ -227,7 +246,7 @@ const Home = () => {
               disabled={isSubscribing}
               className="bg-secondary-container text-on-secondary-container px-10 py-4 rounded-md font-bold hover:scale-105 transition-transform active:scale-95 disabled:opacity-50"
             >
-              {isSubscribing ? 'Subscribing...' : 'Subscribe Now'}
+              {isSubscribing ? t('subscribing') : t('subscribe_now')}
             </button>
           </form>
           {message && <p className="text-white/80 mt-4 italic">{message}</p>}
