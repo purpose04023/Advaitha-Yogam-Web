@@ -6,6 +6,7 @@ import WikipediaPage from './pages/WikipediaPage';
 import AdminPortal from './pages/AdminPortal';
 import ContentArchive from './pages/ContentArchive';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { Analytics } from '@vercel/analytics/react';
 
 // Mock data for initial sample pages
 const sampleArticle = {
@@ -18,14 +19,14 @@ const sampleArticle = {
     {
       heading: "Overview",
       paragraphs: [
-        "Advaita Vedanta introduces the revolutionary concept of 'Mithya'—that which is neither absolutely real nor absolutely non-existent. This concept is fundamental to understanding the nature of the world as taught in the Upanishads and systemized by Adi Shankaracharya.",
+        "Advaitha Yogam introduces the revolutionary concept of 'Mithya'—that which is neither absolutely real nor absolutely non-existent. This concept is fundamental to understanding the nature of the world as taught in the Upanishads and systemized by Adi Shankaracharya.",
         "To the uninitiated, Mithya might seem to mean 'false' or 'unreal', but its philosophical implications are far more nuanced. It refers to that which is dependent for its existence on something else, much like the wave is dependent on the ocean."
       ]
     },
     {
       heading: "The Classical Metaphor of the Snake and the Rope",
       paragraphs: [
-        "Perhaps the most famous illustration used in the Advaita tradition is the rajju-sarpa-nyaya, or the metaphor of the rope and the snake. In semi-darkness, a man mistakes a rope for a snake. His fear is real, his reaction is real, but the snake itself is Mithya.",
+        "Perhaps the most famous illustration used in the Advaitha Yogam tradition is the rajju-sarpa-nyaya, or the metaphor of the rope and the snake. In semi-darkness, a man mistakes a rope for a snake. His fear is real, his reaction is real, but the snake itself is Mithya.",
         "Upon closer inspection with a light, the 'snake' disappears, and only the rope remains. The rope is the Satya (the truth), while the snake was Mithya (a superimposition or Adhyasa)."
       ]
     }
@@ -37,13 +38,14 @@ function App() {
 
   return (
     <Router>
+      <Analytics />
       <Routes>
         <Route path="/" element={<Home />} />
 
         <Route path="/articles" element={
           <ContentArchive
             title="Scholarly Articles"
-            description="Deep dives into the philosophical landscape of Advaita Vedanta, featuring both traditional and contemporary interpretations."
+            description="Deep dives into the philosophical landscape of Advaitha Yogam, featuring both traditional and contemporary interpretations."
             items={[
               { title: "The Concept of Mithya", category: "Philosophy", date: "Nov 2024", excerpt: "Exploring the nature of reality and illusion in Shankara's tradition.", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA02vsQc_KUTYWlpRJbSQ7F0Kp7wW85vtSOqfy1KKw0Zaoe6ZoN18FQGzgw2659zdQ-Yh_rJR9Jm8esAQC8o6_NMqlr9qtjGWUK5BJLRyfqWCvIYyaWz6UlCKy_kBJrObFb4CsE6LPMm_8Ai_jFsRxGpxssXj76OVBEmuCug06veCCgApFxJrA8l2m7VqLi2-wRXz1AhejyeJC8jp4DwlOB-hqNErXSBjlK11qGEc6wUBmF_bDoTJvXtCEGCyQjVGfjId4Ty7frUf4" },
               { title: "Non-Duality in Modern Physics", category: "Science", date: "Oct 2024", excerpt: "How quantum entanglement parallels ancient Vedic concepts of interconnectedness." }
@@ -68,7 +70,7 @@ function App() {
             description="Access our extensive collection of digital books, authentic translations, and rare manuscripts."
             items={[
               { title: "Vivekachudamani", category: "Classic Text", date: "Archive", excerpt: "The Crest Jewel of Discrimination - Complete translation and commentary." },
-              { title: "Panchadasi of Vidyaranya", category: "Advanced Study", date: "Archive", excerpt: "A comprehensive guide to Advaita Vedanta for serious practitioners." }
+              { title: "Panchadasi of Vidyaranya", category: "Advanced Study", date: "Archive", excerpt: "A comprehensive guide to Advaitha Yogam for serious practitioners." }
             ]}
           />
         } />
@@ -92,7 +94,7 @@ function App() {
                 <div className="w-20 h-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-8">
                   <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-headline text-2xl font-bold italic">A</div>
                 </div>
-                <h2 className="font-headline text-3xl font-bold text-primary mb-4 tracking-tight">Login to Your Archive</h2>
+                <h2 className="font-headline text-3xl font-bold text-primary mb-4 tracking-tight">Login to Advaitha Yogam</h2>
                 <p className="text-outline mb-12 text-sm leading-relaxed">Access premium content, scholarly articles, and downloadable resources with your secure account.</p>
                 <button
                   onClick={signInWithGoogle}

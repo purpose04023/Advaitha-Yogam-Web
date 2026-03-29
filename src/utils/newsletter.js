@@ -1,45 +1,43 @@
-/**
- * Brevo (formerly Sendinblue) Newsletter Integration Utility
- * Uses the Brevo API to add contacts to a specific list.
- */
+import { supabase } from '../lib/supabase';
 
 export const subscribeToNewsletter = async (email) => {
-  const apiKey = import.meta.env.VITE_BREVO_API_KEY;
-  const listId = parseInt(import.meta.env.VITE_BREVO_LIST_ID || '1');
-
-  if (!apiKey || apiKey === 'your-brevo-key') {
-    console.warn('Brevo API key is missing. Newsletter subscription will not work in production.');
-    // For demo/development, simulate success
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ success: true, message: 'Development mode: Subscription simulated.' });
-      }, 1000);
-    });
-  }
-
   try {
+    // 1. Add to Supabase for our own record
+    const { error: dbError } = await supabase
+      .from('newsletter_subscriptions')
+      .insert([{ email, subscribed_at: new Date().toISOString() }]);
+
+    // Even if DB error (maybe table doesn't exist yet), try Brevo
+    if (dbError) console.warn('Supabase logging failed:', dbError.message);
+
+    // 2. Add to Brevo (Sendinblue)
+    const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY;
+
+    if (!BREVO_API_KEY) {
+      return { success: true, message: 'Local mode: Email captured!' };
+    }
+
     const response = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'api-key': apiKey
+        'accept': 'application/json',
+        'api-key': BREVO_API_KEY,
+        'content-type': 'application/json'
       },
       body: JSON.stringify({
         email: email,
-        listIds: [listId],
-        updateEnabled: true
+        updateEnabled: true,
       })
     });
 
-    if (response.ok || response.status === 204 || response.status === 201) {
-      return { success: true };
-    } else {
+    if (!response.ok) {
       const errorData = await response.json();
-      return { success: false, error: errorData.message || 'Subscription failed' };
+      throw new Error(errorData.message || 'Brevo integration failed');
     }
+
+    return { success: true };
   } catch (error) {
-    console.error('Newsletter subscription error:', error);
-    return { success: false, error: 'Network error or server unavailable' };
+    console.error('Newsletter error:', error);
+    return { success: false, error: error.message };
   }
 };
