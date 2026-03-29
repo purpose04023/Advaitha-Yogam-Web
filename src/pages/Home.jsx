@@ -50,7 +50,7 @@ const Home = () => {
           <img
             alt="Advaitha Yogam Hero"
             className="w-full h-full object-cover"
-            src="https://images.unsplash.com/photo-1545127398-14699f92334b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+            src="/assets/shiva-bg.jpg"
           />
         </div>
 
