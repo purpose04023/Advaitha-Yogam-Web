@@ -1,0 +1,22 @@
+
+> next-app@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.23
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
+ ○ Compiling / ...
+ ✓ Compiled / in 6.1s (572 modules)
+ ✓ Compiled in 715ms (263 modules)
+ GET / 200 in 6905ms
+ ○ Compiling /browse ...
+ ✓ Compiled /browse in 6s (768 modules)
+ GET /browse 200 in 6505ms
+ ○ Compiling /src/middleware ...
+ ✓ Compiled /src/middleware in 1053ms (124 modules)
+ ○ Compiling /admin/login ...
+ ✓ Compiled /admin/login in 532ms (780 modules)
+ GET /admin/login 200 in 785ms
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)

@@ -1,31 +1,55 @@
-# Deployment & Configuration Guide for Advaitha Yogam
+# Deployment Guide for Advaitha Yogam
 
-## Environment Variables
-The application requires the following environment variables (Vite prefix `VITE_`):
+## Vercel Deployment
 
-| Variable | Description |
-|----------|-------------|
-| `VITE_SUPABASE_URL` | Your Supabase Project URL |
-| `VITE_SUPABASE_ANON_KEY` | Your Supabase Project Anon Key |
-| `VITE_BREVO_API_KEY` | API Key for Newsletter integration (Brevo) |
-| `VITE_GEMINI_API_KEY` | API Key for Admin AI Assistant (Google Gemini) |
+1. **Connect your Repository:**
+   Push your code to a GitHub/GitLab/Bitbucket repository and connect it to Vercel.
 
-## Render Deployment (Fix for Error 127)
-To ensure successful deployment on Render:
-1.  **Build Command:** `npm install; npm run build`
-2.  **Start Command:** `npm run preview` (or serve the `dist` folder as a Static Site)
-3.  **Vite in Dependencies:** Ensure `vite`, `@vitejs/plugin-react`, and `@tailwindcss/vite` are in the `dependencies` section of `package.json` (This has been done).
+2. **Configure Environment Variables:**
+   Add all variables from your `.env.local` to the Vercel project settings.
 
-## Admin Portal Access
-The Admin portal is located at `/admin`.
+3. **Deploy:**
+   Vercel will automatically detect Next.js and build the project using `npm run build`.
 
-### Accessing the Portal:
-1.  Go to `/login`.
-2.  **Manual Login:** Enter one of the following admin emails:
-    - `subbu.eenadu@gmail.com`
-    - `soppasripada@gmail.com`
-3.  **Password:** `Advaitha@2025`
-4.  Once logged in, click the "Admin" link in the Navbar to access the dashboard.
+## Supabase Configuration
 
-## Multi-Language Support
-The app supports 11 Indian languages plus English. It automatically defaults to **Telugu** for users in the Indian timezone (`Asia/Kolkata`).
+### 1. Database Schema
+Execute the SQL provided in `supabase_schema.sql` within the Supabase SQL editor.
+
+### 2. View Count RPC
+Run this SQL to enable the view count increment:
+```sql
+CREATE OR REPLACE FUNCTION increment_view_count(row_id UUID)
+RETURNS void AS $$
+BEGIN
+  UPDATE teachings
+  SET view_count = view_count + 1
+  WHERE id = row_id;
+END;
+$$ LANGUAGE plpgsql;
+```
+
+### 3. Authentication
+- Go to **Authentication > Providers** and ensure **Email** is enabled.
+- Disable **Confirm Email** if you want to manually create and use accounts immediately.
+- Go to **Authentication > Users** and manually add:
+  - `subbu.eenadu@gmail.com`
+  - `soppasripada@gmail.com`
+
+### 4. Storage
+- Create a bucket named `books` and set it to **Private**.
+- Create a bucket named `covers` and set it to **Public**.
+
+## API Keys
+
+### Groq API (AI Brain)
+1. Sign up at [Groq Cloud](https://console.groq.com/).
+2. Create an API Key and add it as `GROQ_API_KEY`.
+
+### Unsplash API (Images)
+1. Sign up at [Unsplash Developers](https://unsplash.com/developers).
+2. Create a new Application and add the Access Key as `UNSPLASH_ACCESS_KEY`.
+
+### Brevo (Login Alerts)
+1. Sign up at [Brevo](https://www.brevo.com/).
+2. Get your SMTP API Key and add it as `BREVO_API_KEY`.
