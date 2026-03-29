@@ -26,20 +26,20 @@ const Footer = () => {
           <div>
             <h4 className="font-headline font-bold text-on-surface mb-6 uppercase tracking-widest text-xs">Resources</h4>
             <ul className="space-y-4 text-on-surface-variant text-sm">
-              <li><a href="#" className="hover:text-primary transition-colors">{t('articles')}</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">{t('pravachanam')}</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Digital Library</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Manuscript Archive</a></li>
+              <li><a href="/articles" className="hover:text-primary transition-colors">{t('articles')}</a></li>
+              <li><a href="/pravachanam" className="hover:text-primary transition-colors">{t('pravachanam')}</a></li>
+              <li><a href="/books" className="hover:text-primary transition-colors">Digital Library</a></li>
+              <li><a href="/gallery" className="hover:text-primary transition-colors">Manuscript Archive</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-headline font-bold text-on-surface mb-6 uppercase tracking-widest text-xs">Organization</h4>
             <ul className="space-y-4 text-on-surface-variant text-sm">
-              <li><a href="#" className="hover:text-primary transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Our Scholars</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Events</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Contact</a></li>
+              <li><a href="/" className="hover:text-primary transition-colors">About Us</a></li>
+              <li><a href="/articles" className="hover:text-primary transition-colors">Our Scholars</a></li>
+              <li><a href="/gallery" className="hover:text-primary transition-colors">Events</a></li>
+              <li><a href="/" className="hover:text-primary transition-colors">Contact</a></li>
             </ul>
           </div>
         </div>

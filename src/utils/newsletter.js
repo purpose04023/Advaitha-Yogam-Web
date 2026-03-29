@@ -11,7 +11,7 @@ export const subscribeToNewsletter = async (email) => {
     if (dbError) console.warn('Supabase logging failed:', dbError.message);
 
     // 2. Add to Brevo (Sendinblue)
-    const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY;
+    const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY || import.meta.env.BREVO_API_KEY;
 
     if (!BREVO_API_KEY) {
       return { success: true, message: 'Local mode: Email captured!' };
