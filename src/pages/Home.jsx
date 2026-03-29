@@ -50,7 +50,7 @@ const Home = () => {
           <img
             alt="Advaitha Yogam Hero"
             className="w-full h-full object-cover"
-            src="/assets/shiva-bg.jpg"
+            src="/images/hero-bg.jpg"
           />
         </div>
 
@@ -76,15 +76,15 @@ const Home = () => {
             <div className="flex flex-wrap gap-4 pt-4">
               <button
                 onClick={() => navigate('/articles')}
-                className="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-md font-bold text-lg hover:shadow-xl transition-all active:scale-95"
+                className="bg-[#4169E1] text-white px-8 py-4 rounded-md font-bold text-lg hover:shadow-xl transition-all active:scale-95"
               >
                 {t('begin_journey')}
               </button>
               <button
-                onClick={() => navigate('/pravachanam')}
+                onClick={() => navigate('/books')}
                 className="border border-white/30 text-white px-8 py-4 rounded-md font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-sm active:scale-95"
               >
-                {t('listen_discourses')}
+                Digital Library
               </button>
             </div>
           </motion.div>
