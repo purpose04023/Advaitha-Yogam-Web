@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+  }
+
+  body {
+    @apply bg-[#FDFBF7] text-[#2D5016];
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .animate-bounce-subtle {
+    animation: bounce-subtle 3s ease-in-out infinite;
+  }
+}
+
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.prose {
+  @apply max-w-none;
+}
+
+.prose p {
+  @apply mb-6 leading-relaxed text-gray-600;
+}
+
+.prose h1, .prose h2, .prose h3 {
+  @apply font-black text-[#2D5016] tracking-tighter mt-12 mb-6;
+}
+
+.prose h1 { @apply text-5xl; }
+.prose h2 { @apply text-4xl; }
+.prose h3 { @apply text-3xl; }
+
+.prose ul {
+  @apply list-disc pl-8 mb-8 space-y-4;
+}
+
+.prose li {
+  @apply text-gray-600 font-medium;
+}

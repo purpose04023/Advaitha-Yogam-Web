@@ -1,16 +1,61 @@
-# React + Vite
+# Advaitha Yogam
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack yoga knowledge platform dedicated to spreading the teachings of a spiritual guru.
 
-Currently, two official plugins are available:
+## Tech Stack
+- **Frontend:** Next.js 14 (App Router) + Tailwind CSS
+- **Backend/DB:** Supabase (Auth + Database + Storage)
+- **AI Brain:** Groq API (llama-3.3-70b-versatile)
+- **Images:** Unsplash API
+- **Deployment:** Vercel
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Core Features
+- **Public Website:** Serene homepage and library browse page for books (PDFs) and teachings.
+- **Ultra-Secure Admin:** Restricted to two specific emails with IP locking and login alerts.
+- **AI Assistant:** Groq-powered assistant that helps draft content, suggest titles/descriptions, and find cover images.
+- **Rich Editor:** Simple TipTap-based editor for writing spiritual teachings.
+- **Live Preview:** Real-time preview of how content will look on the public site.
 
-## React Compiler
+## Setup Instructions
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Environment Variables
+Create a `.env.local` file with the following:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+GROQ_API_KEY=your-groq-api-key
+UNSPLASH_ACCESS_KEY=your-unsplash-access-key
+BREVO_API_KEY=your-brevo-api-key
+```
 
-## Expanding the ESLint configuration
+### 2. Database Schema
+Run the contents of `supabase_schema.sql` in your Supabase SQL Editor.
+Also create an RPC function for view counts:
+```sql
+CREATE OR REPLACE FUNCTION increment_view_count(row_id UUID)
+RETURNS void AS $$
+BEGIN
+  UPDATE teachings
+  SET view_count = view_count + 1
+  WHERE id = row_id;
+END;
+$$ LANGUAGE plpgsql;
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 3. Storage Buckets
+Create two buckets in Supabase Storage:
+- `books`: Private (use signed URLs for access)
+- `covers`: Public
+
+### 4. Admin Access
+The two authorized admin emails are:
+- `subbu.eenadu@gmail.com`
+- `soppasripada@gmail.com`
+
+You must manually create these users in your Supabase Auth dashboard.
+
+### 5. Run Locally
+```bash
+npm install
+npm run dev
+```
