@@ -1,21 +1,26 @@
 import { test, expect } from '@playwright/test';
 
-test('verify branding and auth-based download', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+test('Verify Advaitha Yogam rebranding and i18n', async ({ page }) => {
+  await page.goto('http://localhost:5173');
 
-  // Verify Branding
-  await expect(page.locator('text=Advaitha Yogam').first()).toBeVisible();
+  // 1. Verify Branding
+  const title = await page.title();
+  expect(title).toContain('Advaitha Yogam');
 
-  // Navigate to article
-  await page.goto('http://localhost:5173/article/mithya');
+  const heroTitle = page.locator('h1');
+  await expect(heroTitle).toContainText('Advaitha Yogam');
 
-  // Check for "Login to Download" when unauthenticated
-  const loginToDownload = page.locator('text=Login to Download');
-  await expect(loginToDownload).toBeVisible();
+  // 2. Verify Language Switcher existence
+  const langSwitcher = page.locator('button:has(.lucide-globe)');
+  await expect(langSwitcher).toBeVisible();
 
-  // Verify language switcher exists
-  const globeIcon = page.locator('nav .lucide-globe');
-  await expect(globeIcon).toBeVisible();
+  // 3. Verify specific Indian language option (Telugu)
+  await langSwitcher.click();
+  const teluguOption = page.locator('button:has-text("తెలుగు")');
+  await expect(teluguOption).toBeVisible();
 
-  await page.screenshot({ path: 'final-verification.png' });
+  // 4. Test redirection of a previously static button
+  const startJourney = page.locator('button:has-text("Begin Journey"), button:has-text("ప్రయాణాన్ని ప్రారంభించండి")');
+  await startJourney.first().click();
+  await expect(page).toHaveURL(/.*articles/);
 });

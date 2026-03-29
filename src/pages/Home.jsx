@@ -157,7 +157,11 @@ const Home = () => {
                 { title: "Understanding the Nature of Reality: Verses 1-5", series: "Upadesa Saram", time: "3 days ago" },
                 { title: "The Causal Relationship: Sankara's Commentary", series: "Brahma Sutras", time: "1 week ago" }
               ].map((item, idx) => (
-                <div key={idx} className="bg-surface-container p-6 rounded-xl hover:translate-x-1 transition-transform cursor-pointer">
+                <div
+                  key={idx}
+                  onClick={() => navigate('/pravachanam')}
+                  className="bg-surface-container p-6 rounded-xl hover:translate-x-1 transition-transform cursor-pointer"
+                >
                   <p className="text-secondary font-bold text-xs uppercase mb-2">{item.series}</p>
                   <h4 className="font-headline text-lg font-bold text-on-surface leading-tight">{item.title}</h4>
                   <div className="flex items-center gap-4 mt-4">
@@ -202,7 +206,10 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="md:col-span-2 bg-surface-container p-8 rounded-xl group cursor-pointer hover:bg-surface-variant transition-colors">
+            <div
+              onClick={() => navigate('/articles')}
+              className="md:col-span-2 bg-surface-container p-8 rounded-xl group cursor-pointer hover:bg-surface-variant transition-colors"
+            >
               <div className="flex justify-between items-start">
                 <div className="max-w-[70%]">
                   <span className="text-secondary font-bold text-xs">TRADITION</span>
@@ -214,12 +221,18 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="bg-primary text-white p-8 rounded-xl group cursor-pointer hover:bg-on-primary-fixed-variant transition-colors flex flex-col justify-between">
+            <div
+              onClick={() => navigate('/gallery')}
+              className="bg-primary text-white p-8 rounded-xl group cursor-pointer hover:bg-on-primary-fixed-variant transition-colors flex flex-col justify-between"
+            >
               <History className="text-secondary-container w-8 h-8" />
               <h4 className="font-headline text-lg font-bold leading-snug">Manuscript Preservation Project</h4>
             </div>
 
-            <div className="bg-secondary-container p-8 rounded-xl group cursor-pointer hover:opacity-90 transition-colors flex flex-col justify-between">
+            <div
+              onClick={() => navigate('/articles')}
+              className="bg-secondary-container p-8 rounded-xl group cursor-pointer hover:opacity-90 transition-colors flex flex-col justify-between"
+            >
               <Brain className="text-on-secondary-container w-8 h-8" />
               <h4 className="font-headline text-lg font-bold text-on-secondary-container leading-snug">Vedanta & Modern Science</h4>
             </div>

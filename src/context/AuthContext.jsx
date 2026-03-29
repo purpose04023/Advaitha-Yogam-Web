@@ -35,7 +35,8 @@ export const AuthProvider = ({ children }) => {
     return { error };
   };
 
-  const isAdmin = user?.email === 'subbu.eenadu@gmail.com';
+  const admins = ['subbu.eenadu@gmail.com', 'soppasripada@gmail.com'];
+  const isAdmin = user?.email && admins.includes(user.email);
 
   const value = {
     user,

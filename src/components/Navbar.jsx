@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Search, User, Globe } from 'lucide-react';
+import logo from '../assets/logo.png';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../utils/i18n/LanguageContext';
 import { languages } from '../utils/i18n/translations';
@@ -23,8 +24,11 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 bg-[#fff8f1]/90 backdrop-blur-md shadow-sm h-20">
       <div className="flex justify-between items-center px-8 h-full max-w-7xl mx-auto">
-        <Link to="/" className="font-headline text-2xl font-bold text-[#164491] tracking-tight">
-          Advaitha Yogam
+        <Link to="/" className="flex items-center gap-3">
+          <img src={logo} alt="Advaitha Yogam" className="h-12 w-12 object-contain" />
+          <span className="font-headline text-2xl font-bold text-[#164491] tracking-tight">
+            Advaitha Yogam
+          </span>
         </Link>
         <div className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => (

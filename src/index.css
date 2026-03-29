@@ -14,7 +14,7 @@
   --color-on-tertiary: #ffffff;
   --color-on-secondary-fixed-variant: #822708;
   --color-on-tertiary-fixed-variant: #693c00;
-  --color-on-secondary-container: #721d00;
+  --color-on-secondary-container: #ffffff;
   --color-background: #fff8f1;
   --color-inverse-on-surface: #faf0de;
   --color-tertiary: #4a2900;
@@ -29,8 +29,8 @@
   --color-surface-tint: #345caa;
   --color-on-secondary-fixed: #3a0a00;
   --color-on-tertiary-fixed: #2c1600;
-  --color-secondary-container: #fe835d;
-  --color-primary: #002e6e;
+  --color-secondary-container: #4169E1;
+  --color-primary: #4169E1;
   --color-surface-container: #f7eddc;
   --color-surface-dim: #e3d9c8;
   --color-on-surface: #1f1b11;
@@ -52,6 +52,11 @@
   --font-headline: "Noto Serif", serif;
   --font-body: "Plus Jakarta Sans", sans-serif;
   --font-label: "Plus Jakarta Sans", sans-serif;
+
+  --radius-default: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
 }
 
 @layer base {
