@@ -34,7 +34,22 @@ const sampleArticle = {
 };
 
 function App() {
-  const { signInWithGoogle, user } = useAuth();
+  const { signInWithGoogle, signInWithEmail, user } = useAuth();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [loginError, setLoginError] = React.useState('');
+  const [isLoggingIn, setIsLoggingIn] = React.useState(false);
+
+  const handleEmailLogin = async (e) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+    setLoginError('');
+    const { error } = await signInWithEmail(email, password);
+    if (error) {
+      setLoginError(error.message || 'Login failed. Please check your credentials.');
+    }
+    setIsLoggingIn(false);
+  };
 
   return (
     <Router>
@@ -90,17 +105,55 @@ function App() {
         <Route path="/login" element={
           user ? <Navigate to="/" replace /> : (
             <div className="flex items-center justify-center min-h-screen bg-background p-8">
-              <div className="p-12 bg-white shadow-2xl rounded-2xl max-w-md w-full text-center border border-outline-variant/30">
-                <div className="w-20 h-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-8">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-headline text-2xl font-bold italic">A</div>
+              <div className="p-10 bg-white shadow-2xl rounded-2xl max-w-md w-full text-center border border-outline-variant/30">
+                <div className="w-16 h-16 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-headline text-xl font-bold italic">A</div>
                 </div>
-                <h2 className="font-headline text-3xl font-bold text-primary mb-4 tracking-tight">Login to Advaitha Yogam</h2>
-                <p className="text-outline mb-12 text-sm leading-relaxed">Access premium content, scholarly articles, and downloadable resources with your secure account.</p>
+                <h2 className="font-headline text-2xl font-bold text-primary mb-2 tracking-tight">Login to Advaitha Yogam</h2>
+                <p className="text-outline mb-8 text-xs leading-relaxed">Access premium content and scholarly articles with your secure account.</p>
+
+                <form onSubmit={handleEmailLogin} className="space-y-4 mb-6">
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="Email Address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border border-outline-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border border-outline-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
+                      required
+                    />
+                  </div>
+                  {loginError && <p className="text-red-500 text-xs italic">{loginError}</p>}
+                  <button
+                    type="submit"
+                    disabled={isLoggingIn}
+                    className="w-full bg-primary text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 disabled:opacity-50 text-sm"
+                  >
+                    {isLoggingIn ? 'Logging in...' : 'Sign In'}
+                  </button>
+                </form>
+
+                <div className="relative flex items-center gap-4 mb-6">
+                  <div className="flex-1 h-px bg-outline-variant/30"></div>
+                  <span className="text-[10px] text-outline uppercase font-bold tracking-widest">or</span>
+                  <div className="flex-1 h-px bg-outline-variant/30"></div>
+                </div>
+
                 <button
                   onClick={signInWithGoogle}
-                  className="w-full flex items-center justify-center gap-4 bg-white border border-outline-variant/50 px-6 py-4 rounded-xl font-bold hover:bg-surface-container transition-all active:scale-95 shadow-sm"
+                  className="w-full flex items-center justify-center gap-4 bg-white border border-outline-variant/50 px-6 py-3 rounded-xl font-bold hover:bg-surface-container transition-all active:scale-95 shadow-sm text-sm"
                 >
-                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-6 h-6" alt="Google" />
+                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-4 h-4" alt="Google" />
                   Continue with Google
                 </button>
               </div>

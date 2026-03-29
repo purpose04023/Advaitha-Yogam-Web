@@ -1,28 +1,31 @@
 # Deployment & Configuration Guide for Advaitha Yogam
 
-To ensure the website is fully functional on Vercel or Render, you must configure the following Environment Variables in your hosting provider's dashboard.
+## Environment Variables
+The application requires the following environment variables (Vite prefix `VITE_`):
 
-## Required Environment Variables
+| Variable | Description |
+|----------|-------------|
+| `VITE_SUPABASE_URL` | Your Supabase Project URL |
+| `VITE_SUPABASE_ANON_KEY` | Your Supabase Project Anon Key |
+| `VITE_BREVO_API_KEY` | API Key for Newsletter integration (Brevo) |
+| `VITE_GEMINI_API_KEY` | API Key for Admin AI Assistant (Google Gemini) |
 
-| Variable Name | Description | Where to get it |
-|---------------|-------------|-----------------|
-| `VITE_SUPABASE_URL` | Your Supabase Project URL | Supabase Dashboard > Project Settings > API |
-| `VITE_SUPABASE_ANON_KEY` | Your Supabase Anonymous API Key | Supabase Dashboard > Project Settings > API |
-| `VITE_BREVO_API_KEY` | Your Brevo (formerly Sendinblue) API Key | Brevo Dashboard > SMTP & API > API Keys |
-| `VITE_GOOGLE_GEMINI_KEY` | Google Gemini API Key | [Google AI Studio](https://aistudio.google.com/app/apikey) |
-| `VITE_AI_ASSISTANT_URL` | (Optional) Backend URL for AI tasks | Your deployed backend URL (if any) |
+## Render Deployment (Fix for Error 127)
+To ensure successful deployment on Render:
+1.  **Build Command:** `npm install; npm run build`
+2.  **Start Command:** `npm run preview` (or serve the `dist` folder as a Static Site)
+3.  **Vite in Dependencies:** Ensure `vite`, `@vitejs/plugin-react`, and `@tailwindcss/vite` are in the `dependencies` section of `package.json` (This has been done).
 
 ## Admin Portal Access
+The Admin portal is located at `/admin`.
 
-The Admin Portal is restricted to authorized administrators for security.
+### Accessing the Portal:
+1.  Go to `/login`.
+2.  **Manual Login:** Enter one of the following admin emails:
+    - `subbu.eenadu@gmail.com`
+    - `soppasripada@gmail.com`
+3.  **Password:** `Advaitha@2025`
+4.  Once logged in, click the "Admin" link in the Navbar to access the dashboard.
 
-1.  **Authorized Emails:** `subbu.eenadu@gmail.com`, `soppasripada@gmail.com`
-2.  **Access Steps:**
-    *   Click "Login" on the website and sign in with one of the authorized Google accounts.
-    *   Once logged in, an "Admin" link will appear in the top navigation bar.
-    *   Alternatively, you can navigate directly to `/admin`.
-3.  **Authentication Setup:** Ensure that you have enabled "Google" as an Auth Provider in your Supabase project under **Authentication > Providers**.
-
-## Render "Error 127" Fix
-
-The "Error 127" was caused by `vite` being in `devDependencies`. I have moved it to `dependencies` in `package.json`. This ensures that the `vite build` command can run correctly on production servers like Render.
+## Multi-Language Support
+The app supports 11 Indian languages plus English. It automatically defaults to **Telugu** for users in the Indian timezone (`Asia/Kolkata`).
