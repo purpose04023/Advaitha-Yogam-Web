@@ -4,15 +4,24 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --background: 48 20% 98%; /* Match #FDFCF8 roughly */
+    --foreground: 120 15% 10%;
   }
 
   body {
-    @apply bg-[#FDFBF7] text-[#2D5016];
+    @apply bg-cream text-sage-900;
     font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  [lang="te"] {
+    @apply font-telugu leading-relaxed;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-24 md:py-32 px-6 md:px-16;
   }
 }
 
@@ -42,7 +51,7 @@
 }
 
 .prose h1, .prose h2, .prose h3 {
-  @apply font-black text-[#2D5016] tracking-tighter mt-12 mb-6;
+  @apply font-bold text-sage-800 tracking-tight mt-12 mb-6;
 }
 
 .prose h1 { @apply text-5xl; }
