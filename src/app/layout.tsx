@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Noto_Sans_Telugu } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
+const telugu = Noto_Sans_Telugu({
+  subsets: ["telugu"],
+  weight: ["400", "700"],
+  variable: "--font-telugu"
+});
 
 export const metadata: Metadata = {
   title: "Advaitha Yogam | Eternal Spiritual Knowledge",
@@ -20,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-[#FDFBF7]`}>
+      <body className={`${inter.variable} ${playfair.variable} ${telugu.variable} font-sans antialiased bg-cream text-sage-900`}>
         {children}
       </body>
     </html>

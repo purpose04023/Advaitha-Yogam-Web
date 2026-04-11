@@ -2,20 +2,46 @@
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import PublicNavbar from '@/components/public/PublicNavbar';
+import Footer from '@/components/public/Footer';
 import { Search, BookOpen, PenSquare, ArrowRight, Loader2, Calendar, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
+import { motion, Variants } from 'framer-motion';
+
+const fadeInUp: Variants = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+  }
+};
 
 function BrowseContent() {
   const searchParams = useSearchParams();
   const initialType = searchParams.get('type') || 'All';
+  const initialSearch = searchParams.get('search') || '';
+
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSearch);
   const [type, setType] = useState(initialType);
   const [category, setCategory] = useState('All');
+
+  // Sync search state with URL parameters
+  useEffect(() => {
+    const querySearch = searchParams.get('search');
+    if (querySearch !== null) {
+      setSearch(querySearch);
+    }
+
+    const queryType = searchParams.get('type');
+    if (queryType !== null) {
+      setType(queryType);
+    }
+  }, [searchParams]);
 
   const fetchContent = useCallback(async () => {
     setLoading(true);
@@ -41,56 +67,60 @@ function BrowseContent() {
   );
 
   return (
-    <section className="pt-48 pb-20 px-12 max-w-7xl mx-auto space-y-12">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 pb-12 border-b border-[#E8873A]/10">
-        <div className="space-y-6">
-          <h1 className="text-6xl font-black text-[#2D5016] tracking-tighter leading-none">The <span className="text-[#E8873A]">Library</span> of Peace.</h1>
-          <p className="text-gray-500 text-lg font-medium max-w-xl">Browse our complete collection of digital books and spiritual teachings.</p>
+    <div className="pt-40 pb-20 px-6 md:px-16 max-w-7xl mx-auto space-y-16">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col md:flex-row md:items-end justify-between gap-12 pb-12 border-b border-sage-100"
+      >
+        <div className="space-y-4">
+          <h1 className="text-5xl font-bold text-sage-900 tracking-tight leading-tight">The <span className="text-terracotta-500">Library</span> of Peace.</h1>
+          <p className="text-sage-600 text-lg font-medium max-w-xl">Browse our complete collection of digital books and spiritual teachings.</p>
         </div>
 
-        <div className="flex bg-white p-2.5 rounded-[2rem] border border-gray-100 shadow-xl shadow-[#E8873A]/5">
+        <div className="flex bg-sage-50 p-1.5 rounded-full border border-sage-100">
            {['All', 'book', 'concept'].map((t) => (
              <button
                key={t}
                onClick={() => setType(t)}
-               className={`px-8 py-3 rounded-[1.5rem] text-xs font-black transition-all uppercase tracking-widest ${
-                 type === t ? 'bg-[#E8873A] text-white shadow-xl shadow-[#E8873A]/20' : 'text-gray-400 hover:text-gray-600'
+               className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all uppercase tracking-widest ${
+                 type === t ? 'bg-terracotta-500 text-white shadow-md shadow-terracotta-500/20' : 'text-sage-400 hover:text-sage-600'
                }`}
              >
-               {t === 'book' ? 'Digital Books' : t === 'concept' ? 'Teachings' : 'All Wisdom'}
+               {t === 'book' ? 'Books' : t === 'concept' ? 'Articles' : 'All'}
              </button>
            ))}
         </div>
-      </div>
+      </motion.div>
 
-      <div className="flex flex-col lg:flex-row gap-12">
+      <div className="flex flex-col lg:flex-row gap-16">
         {/* Sidebar Filters */}
-        <aside className="lg:w-72 flex-shrink-0 space-y-12">
+        <aside className="lg:w-64 flex-shrink-0 space-y-12">
           <div className="space-y-4">
-             <label className="text-[10px] font-black text-[#E8873A] uppercase tracking-[0.3em] px-2">Search Library</label>
+             <label className="text-[11px] font-bold text-sage-400 uppercase tracking-widest px-2">Search Library</label>
              <div className="relative">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-sage-400" />
                 <input
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search titles..."
-                  className="w-full pl-14 pr-6 py-4 bg-white border border-gray-100 rounded-[2rem] focus:ring-4 focus:ring-[#E8873A]/10 outline-none font-bold text-[#2D5016] text-sm shadow-xl shadow-[#E8873A]/5 transition-all"
+                  placeholder="Titles..."
+                  className="w-full pl-11 pr-4 py-3 bg-white border border-sage-200 rounded-xl focus:ring-2 focus:ring-terracotta-500/20 outline-none font-medium text-sage-900 text-sm transition-all"
                 />
              </div>
           </div>
 
           <div className="space-y-6">
-             <label className="text-[10px] font-black text-[#E8873A] uppercase tracking-[0.3em] px-2">Categories</label>
-             <div className="flex flex-col gap-3">
+             <label className="text-[11px] font-bold text-sage-400 uppercase tracking-widest px-2">Categories</label>
+             <div className="flex flex-col gap-2">
                 {['All', 'Advaita Vedanta', 'Pranayama', 'Philosophy', 'Meditation'].map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setCategory(cat)}
-                    className={`text-left px-6 py-4 rounded-[1.5rem] text-xs font-black uppercase tracking-widest transition-all border-2 ${
+                    className={`text-left px-4 py-3 rounded-lg text-sm font-semibold transition-all ${
                       category === cat
-                        ? 'bg-[#2D5016] border-[#2D5016] text-white shadow-2xl shadow-[#2D5016]/20'
-                        : 'bg-white border-gray-100 text-gray-400 hover:border-gray-200'
+                        ? 'bg-sage-100 text-sage-900'
+                        : 'text-sage-500 hover:bg-sage-50 hover:text-sage-700'
                     }`}
                   >
                     {cat}
@@ -104,99 +134,99 @@ function BrowseContent() {
         <div className="flex-grow">
           {loading ? (
             <div className="py-20 text-center">
-              <Loader2 className="w-12 h-12 text-[#E8873A] animate-spin mx-auto mb-4" />
-              <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Accessing Knowledge...</p>
+              <Loader2 className="w-10 h-10 text-terracotta-500 animate-spin mx-auto mb-4" />
+              <p className="text-sage-400 font-bold uppercase tracking-widest text-[10px]">Accessing Knowledge...</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-10">
-              {filteredItems.map((item) => (
-                <Link
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {filteredItems.map((item, index) => (
+                <motion.div
                   key={item.id}
-                  href={item.type === 'book' ? item.file_url : `/teaching/${item.id}`}
-                  target={item.type === 'book' ? "_blank" : "_self"}
-                  className="bg-white rounded-[3rem] shadow-xl shadow-[#E8873A]/5 border border-gray-100 overflow-hidden flex flex-col group hover:shadow-2xl transition-all hover:scale-[1.02] relative"
+                  initial="initial"
+                  animate="animate"
+                  variants={fadeInUp}
+                  transition={{ delay: index * 0.05 }}
                 >
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <img src={item.cover_image_url || 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=2070&auto=format&fit=crop'} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" />
-                    <div className="absolute top-6 left-6">
-                      <span className="px-5 py-2 bg-white/90 backdrop-blur-md text-[#E8873A] text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-2xl shadow-[#E8873A]/10 border border-[#E8873A]/10">
-                        {item.category_name}
-                      </span>
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div className="absolute bottom-6 right-6 flex items-center justify-center p-4 bg-[#E8873A] text-white rounded-2xl shadow-2xl shadow-[#E8873A]/20 scale-0 group-hover:scale-100 transition-transform">
-                       {item.type === 'book' ? <BookOpen className="w-6 h-6" /> : <ArrowRight className="w-6 h-6" />}
-                    </div>
-                  </div>
-
-                  <div className="p-10 flex-grow space-y-6">
-                    <div className="space-y-3">
-                       <div className="flex items-center gap-2 text-[#E8873A] text-[10px] font-black uppercase tracking-widest">
-                         {item.type === 'book' ? <><BookOpen className="w-3 h-3" /> Digital Book</> : <><PenSquare className="w-3 h-3" /> Article</>}
-                       </div>
-                       <h3 className="text-3xl font-black text-[#2D5016] line-clamp-2 leading-[1.1] tracking-tighter">{item.title}</h3>
-                    </div>
-                    <p className="text-gray-500 text-sm font-medium line-clamp-3 leading-relaxed">{item.description || item.content_text?.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...'}</p>
-
-                    <div className="pt-6 border-t border-gray-50 flex items-center gap-6 text-gray-400 text-[10px] font-black uppercase tracking-widest">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3 h-3" />
-                        {format(new Date(item.created_at), 'MMM d, yyyy')}
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <Eye className="w-3 h-3" />
-                        {item.view_count || 0} Views
+                  <Link
+                    href={item.type === 'book' ? item.file_url : `/teaching/${item.id}`}
+                    target={item.type === 'book' ? "_blank" : "_self"}
+                    className="bg-white rounded-xl shadow-sm border border-sage-100 overflow-hidden flex flex-col group hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300"
+                  >
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <img
+                        src={item.cover_image_url || 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=2070&auto=format&fit=crop'}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-sage-700 text-[10px] font-bold uppercase tracking-wider rounded-md border border-sage-100">
+                          {item.category_name}
+                        </span>
                       </div>
                     </div>
-                  </div>
-                </Link>
+
+                    <div className="p-8 flex-grow space-y-4">
+                      <div className="space-y-2">
+                         <div className="flex items-center gap-2 text-terracotta-500 text-[10px] font-bold uppercase tracking-wider">
+                           {item.type === 'book' ? <><BookOpen className="w-3 h-3" /> Digital Book</> : <><PenSquare className="w-3 h-3" /> Article</>}
+                         </div>
+                         <h3 className="text-2xl font-bold text-sage-900 line-clamp-2 leading-tight tracking-tight">{item.title}</h3>
+                      </div>
+                      <p className="text-sage-500 text-sm font-medium line-clamp-3 leading-relaxed">{item.description || item.content_text?.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...'}</p>
+
+                      <div className="pt-6 border-t border-sage-50 flex items-center justify-between text-sage-400 text-[10px] font-bold uppercase tracking-wider">
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-1.5">
+                            <Calendar className="w-3 h-3" />
+                            {format(new Date(item.created_at), 'MMM d, yyyy')}
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <Eye className="w-3 h-3" />
+                            {item.view_count || 0}
+                          </div>
+                        </div>
+                        <div className="text-terracotta-500 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                          Read More <ArrowRight className="w-3 h-3" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
               ))}
             </div>
           )}
 
           {!loading && filteredItems.length === 0 && (
-            <div className="py-32 text-center border-4 border-dashed border-gray-100 rounded-[4rem] flex flex-col items-center gap-6">
-              <div className="w-24 h-24 bg-gray-50 rounded-[2.5rem] flex items-center justify-center text-gray-200">
-                 <BookOpen className="w-12 h-12" />
+            <div className="py-20 text-center border-2 border-dashed border-sage-100 rounded-3xl flex flex-col items-center gap-6">
+              <div className="w-16 h-16 bg-sage-50 rounded-full flex items-center justify-center text-sage-200">
+                 <BookOpen className="w-8 h-8" />
               </div>
               <div>
-                 <h3 className="text-3xl font-black text-[#2D5016] tracking-tighter mb-2">Knowledge is waiting...</h3>
-                 <p className="text-gray-400 font-medium text-lg">Try changing your search or filters to find what you seek.</p>
+                 <h3 className="text-xl font-bold text-sage-900 tracking-tight mb-1">No wisdom found</h3>
+                 <p className="text-sage-400 font-medium">Try changing your search or filters to find what you seek.</p>
               </div>
             </div>
           )}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
 export default function BrowsePage() {
   return (
-    <div className="min-h-screen bg-[#FDFBF7]">
+    <div className="min-h-screen bg-cream selection:bg-terracotta-200">
       <PublicNavbar />
       <Suspense fallback={
         <div className="pt-48 pb-20 px-12 text-center">
-          <Loader2 className="w-12 h-12 text-[#E8873A] animate-spin mx-auto mb-4" />
-          <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Loading Wisdom...</p>
+          <Loader2 className="w-10 h-10 text-terracotta-500 animate-spin mx-auto mb-4" />
+          <p className="text-sage-400 font-bold uppercase tracking-widest text-xs">Loading Wisdom...</p>
         </div>
       }>
         <BrowseContent />
       </Suspense>
 
-      {/* Public Footer */}
-      <footer className="py-20 px-12 bg-[#2D5016] text-white text-center">
-         <div className="max-w-4xl mx-auto space-y-12">
-            <h2 className="text-4xl font-black tracking-tight flex items-center justify-center gap-4">
-              <div className="w-10 h-10 bg-[#E8873A] rounded-2xl rotate-45 flex items-center justify-center">
-                <span className="text-white -rotate-45 font-black">A</span>
-              </div>
-              Advaitha Yogam
-            </h2>
-            <div className="w-24 h-1.5 bg-[#E8873A] rounded-full mx-auto"></div>
-            <p className="text-[10px] text-white/30 font-black uppercase tracking-[0.4em] leading-relaxed">© 2025 Eternal Rights Reserved</p>
-         </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
